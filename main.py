@@ -4,18 +4,12 @@ from matplotlib import rcParams
 rcParams['mathtext.default'] = 'regular'
 from functions import *
 
-# a plot to hold all of the information about the data we want to plot
-#the first entry is the csv file that holds our data
-#the second entry holds the plotting features
-#the third entry holds the label
-#the fourth entry holds the kind of plot it is (limit, data, band)
-#the fifth argument holds hwether it should be plotted or not
-plot_info = np.array([
-                        ['brian_flux.csv', 'bo-', 'from brian flux','limit','yes'],
-                        ['other_flux.csv', 'ro-', 'from other flux','limit','yes']
-                    ])
+plotBrian = False
+plotAhlers = True
 
 def main():
+   
+
     #set up the final plot
     xlow = 1e6 #the lower x limit
     xup = 1.001e21 #the uppper x limit
@@ -24,14 +18,11 @@ def main():
     fig = plt.figure(figsize=(6,8))
     ax1 = fig.add_subplot(1,1,1)
 
-    #add the necessary curves and figures
-    rows = plot_info.shape[0] #figure out how many rows we need to plot
-    for i in xrange (0,rows):
-        if(plot_info[i][4] == 'no'):  #check to see if we're supposed to plot this data
-            continue
-        if(plot_info[i][3]=='limit'): #this means we should call the limit function
-            add_limit(ax1, plot_info[i][0],plot_info[i][1],plot_info[i][2])
-    ax1.fill_between(
+    if plotBrian:
+        brianPlot(ax1)
+    if plotAhlers:
+        AhlersPlot(ax1)
+
     #prepare the labels and save the figure
     ax1.set_xlabel('Energy (eV)') #give it a title
     ax1.set_ylabel(r'E dN / dE dA d$\Omega$ dt ($km^{2}$ sr yr)$^{-1}$')
@@ -43,6 +34,12 @@ def main():
     ax1.set_xticks([1e6,1e8,1e10,1e12,1e14,1e16,1e18,1e20])
     ax1.legend()
     fig.savefig('test.jpg',edgecolor='none') #save the figure
+    
+    
+    
+
+
+
 
 
 
